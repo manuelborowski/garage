@@ -1,19 +1,18 @@
 <script lang="ts">
   // 0.1: started from kelder-grondwater 0.6
+  // 0.2: implemented statemachine
 
-  const version: string = "0.1"
+  const version: string = "0.2"
   import { onMount } from "svelte";
   
-  let switch_opened = false;
-  let switch_closed = false;
+  let state: string = "";
   let disable_opener_button = false;
 
-  const get_switches = async () => {
+  const get_state = async () => {
     const response = await fetch('/api/sonoff');
     const json_data = await response.json();
-    console.log(json_data);
-    if (json_data.status)  ({switch_opened, switch_closed } = json_data.switches);
-    console.log("switch_opened, switch_closed", switch_opened, switch_closed);
+  // console.log(json_data);
+    if (json_data.status)  state = json_data.state;
   }
 
   const pulse_door_opener = async () => {
@@ -24,7 +23,7 @@
   }
 
   onMount(async () => {
-    setInterval(get_switches, 1000);
+    setInterval(get_state, 1000);
   })
 
 </script>
@@ -33,10 +32,13 @@
   <div class="md:flex">
     <div class="md:shrink-0 flex flex-col items-center justify-center space-y-4">
       <div>
-        <img class="h-full w-full object-cover md:h-full md:w-48 { !switch_opened && !switch_closed ? 'animate-bounce' : ''}" src="{ switch_opened ? 'garage-opened.png' : switch_closed ? 'garage-closed.png' : 'garage-moving.png' }" alt="Garagedeur" />
+        <img class="h-full w-full object-cover md:h-full md:w-48 { state === "moving" ? 'animate-bounce' : ''}" 
+        src="{ state === "opened" ? 'garage-opened.png' : 
+               state === "closed" ? 'garage-closed.png' : 
+               state === "moving" ?'garage-moving.png' : 'garage-error.png' }" alt="Garagedeur" />
       </div>
       <div>
-        <button on:click={pulse_door_opener} disabled={disable_opener_button} class="{disable_opener_button ? "bg-red-500" : "bg-blue-500 hover:bg-blue-700" }  text-white font-bold py-2 px-4 rounded">AAN/UIT</button>
+        <button on:click={pulse_door_opener} disabled={disable_opener_button} class="{disable_opener_button ? "bg-red-500" : "bg-blue-500 hover:bg-blue-700" }  text-white font-bold py-2 px-4 rounded">OPEN/DICHT</button>
       </div>
     </div>
   </div>
