@@ -1,11 +1,12 @@
 <script lang="ts">
   // 0.1: started from kelder-grondwater 0.6
   // 0.2: implemented statemachine
+  // 0.3: initial state is moving
 
   const version: string = "0.2"
   import { onMount } from "svelte";
   
-  let state: string = "";
+  let state: string = "moving";
   let disable_opener_button = false;
 
   const get_state = async () => {
