@@ -24,15 +24,15 @@ export const init = () => {
   // console.log(topic, message)
     if (topic.toString().includes("RESULT")) {
       const json_data = JSON.parse(message.toString());
-      if (json_data.Switch3 !== undefined) switch_opened = json_data.Switch3 === "1";
-      if (json_data.Switch4 !== undefined) switch_closed = json_data.Switch4 === "1";
+      if (json_data.Switch3 !== undefined) switch_closed = json_data.Switch3 === "1";
+      if (json_data.Switch4 !== undefined) switch_opened = json_data.Switch4 === "1";
 
     // console.log("switch opened, switch closed", switch_opened, switch_closed);
     } else if (topic.toString().includes("stat")) {
       const json_data = JSON.parse(message.toString());
     // console.log("stat received, json_data", json_data);
-      if (json_data.StatusSNS.Switch3 !== undefined) switch_opened = json_data.StatusSNS.Switch3 === "ON";
-      if (json_data.StatusSNS.Switch4 !== undefined) switch_closed = json_data.StatusSNS.Switch4 === "ON";
+      if (json_data.StatusSNS.Switch3 !== undefined) switch_closed = json_data.StatusSNS.Switch3 === "ON";
+      if (json_data.StatusSNS.Switch4 !== undefined) switch_opened = json_data.StatusSNS.Switch4 === "ON";
     } 
   });
   client.publish(`cmnd/${SONOFF_ID}/STATUS`, "10");

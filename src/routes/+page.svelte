@@ -2,8 +2,9 @@
   // 0.1: started from kelder-grondwater 0.6
   // 0.2: implemented statemachine
   // 0.3: initial state is moving
+  // 0.4: switch opened and closed switch
 
-  const version: string = "0.2"
+  const version: string = "0.4"
   import { onMount } from "svelte";
   
   let state: string = "moving";
