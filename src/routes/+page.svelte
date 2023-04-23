@@ -3,11 +3,12 @@
   // 0.2: implemented statemachine
   // 0.3: initial state is moving
   // 0.4: switch opened and closed switch
+  // 0.5: updated start
 
-  const version: string = "0.4"
+  const version: string = "0.5"
   import { onMount } from "svelte";
   
-  let state: string = "moving";
+  let state: string = "start";
   let disable_opener_button = false;
 
   const get_state = async () => {
@@ -25,6 +26,7 @@
   }
 
   onMount(async () => {
+    get_state();
     setInterval(get_state, 1000);
   })
 
@@ -37,6 +39,7 @@
         <img class="h-full w-full object-cover md:h-full md:w-48 { state === "moving" ? 'animate-bounce' : ''}" 
         src="{ state === "opened" ? 'garage-opened.png' : 
                state === "closed" ? 'garage-closed.png' : 
+               state === "start" ? 'garage-patience.png' : 
                state === "moving" ?'garage-moving.png' : 'garage-error.png' }" alt="Garagedeur" />
       </div>
       <div>
